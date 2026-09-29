@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maze Project — Tanıtım Sayfası</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #08090d;
+            --sidebar: #0d0f15;
+            --card: #11141b;
+            --card-hover: #161a23;
+            --border: rgba(255,255,255,.07);
+            --text: #f5f7fb;
+            --muted: #8b92a3;
+            --accent: #7c5cff;
+            --accent-2: #5b8cff;
+            --danger: #ff5571;
+            --success: #42d392;
+        }
+
+        body {
+            font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+            background:
+                radial-gradient(circle at 70% 0%, rgba(124,92,255,.12), transparent 30%),
+                var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        button,
+        input {
+            font: inherit;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 250px;
+            height: 100vh;
+            background: rgba(13,15,21,.92);
+            border-right: 1px solid var(--border);
+            padding: 24px 16px;
+            z-index: 100;
+            backdrop-filter: blur(20px);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 4px 10px 30px;
+        }
+
+.logo-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    font-weight: 800;
+    box-shadow: 0 10px 30px rgba(124,92,255,.25);
+    overflow: hidden;
+}
+
+.logo-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+        .logo-text {
+            font-size: 19px;
+            font-weight: 800;
+        }
+
+        .logo-text span {
+            color: var(--accent);
+        }
+
+        .menu-title {
+            color: #555c6c;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            padding: 0 12px;
+            margin: 10px 0;
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .nav-item {
+            border: 0;
+            background: transparent;
+            color: var(--muted);
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-align: left;
+            transition: .2s;
+        }
+
+        .nav-item:hover {
+            background: rgba(255,255,255,.04);
+            color: white;
+        }
+
+        .nav-item.active {
+            color: white;
+            background: linear-gradient(
+                90deg,
+                rgba(124,92,255,.18),
+                rgba(124,92,255,.05)
+            );
+            box-shadow: inset 3px 0 0 var(--accent);
+        }
+
+        .nav-icon {
+            width: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .nav-count {
+            margin-left: auto;
+            font-size: 11px;
+            background: rgba(255,255,255,.06);
+            padding: 3px 7px;
+            border-radius: 20px;
+            color: #737b8c;
+        }
+
+        .sidebar-bottom {
+            position: absolute;
+            left: 16px;
+            right: 16px;
+            bottom: 18px;
+        }
+
+        .discord-box {
+            padding: 14px;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,.025);
+            border-radius: 13px;
+        }
+
+        .discord-box strong {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .discord-box p {
+            font-size: 11px;
+            color: var(--muted);
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .discord-btn {
+            width: 100%;
+            border: 0;
+            background: #5865f2;
+            color: white;
+            padding: 9px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* =========================
+           MAIN
+        ========================= */
+
+        .main {
+            margin-left: 250px;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            height: 72px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 38px;
+            position: sticky;
+            top: 0;
+            background: rgba(8,9,13,.72);
+            backdrop-filter: blur(20px);
+            z-index: 50;
+        }
+
+        .breadcrumb {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .breadcrumb span {
+            color: white;
+        }
+
+        .search {
+            position: relative;
+            width: 260px;
+        }
+
+        .search input {
+            width: 100%;
+            background: rgba(255,255,255,.04);
+            border: 1px solid var(--border);
+            outline: none;
+            color: white;
+            padding: 10px 14px 10px 38px;
+            border-radius: 9px;
+            font-size: 13px;
+        }
+
+        .search input:focus {
+            border-color: rgba(124,92,255,.5);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 13px;
+            top: 10px;
+            color: #737b8c;
+        }
+
+        .content {
+            max-width: 1400px;
+            margin: auto;
+            padding: 42px;
+        }
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+            padding: 46px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background:
+                radial-gradient(circle at 85% 20%, rgba(124,92,255,.2), transparent 35%),
+                linear-gradient(135deg, #10131b, #0c0e14);
+            margin-bottom: 35px;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            right: -90px;
+            bottom: -130px;
+            border-radius: 50%;
+            background: rgba(91,140,255,.12);
+            filter: blur(30px);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 720px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(124,92,255,.12);
+            border: 1px solid rgba(124,92,255,.25);
+            color: #aa98ff;
+            padding: 7px 11px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .hero h1 {
+            font-size: clamp(32px, 4vw, 52px);
+            line-height: 1.05;
+            letter-spacing: -2px;
+            margin-bottom: 16px;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(90deg, #9b86ff, #66a2ff);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            color: var(--muted);
+            max-width: 620px;
+            line-height: 1.7;
+            font-size: 14px;
+        }
+
+        /* =========================
+           STATS
+        ========================= */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-bottom: 35px;
+        }
+
+        .stat {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .stat-label {
+            color: var(--muted);
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .stat-value {
+            font-size: 25px;
+            font-weight: 800;
+        }
+
+        .stat-small {
+            color: var(--success);
+            font-size: 11px;
+            margin-left: 6px;
+        }
+
+        /* =========================
+           SECTION
+        ========================= */
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            margin-bottom: 18px;
+        }
+
+        .section-header h2 {
+            font-size: 21px;
+        }
+
+        .section-header p {
+            color: var(--muted);
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .filter {
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--muted);
+            padding: 9px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+        }
+
+        /* =========================
+           PRODUCTS
+        ========================= */
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .product {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: .25s;
+            cursor: pointer;
+        }
+
+        .product:hover {
+            transform: translateY(-4px);
+            border-color: rgba(124,92,255,.35);
+            background: var(--card-hover);
+            box-shadow: 0 20px 50px rgba(0,0,0,.25);
+        }
+
+        .product-banner {
+            height: 125px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1d1830, #111827);
+        }
+
+        .product-banner::before {
+            content: "";
+            position: absolute;
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: rgba(124,92,255,.2);
+            right: -30px;
+            top: -60px;
+            filter: blur(5px);
+        }
+
+        .product-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #7c5cff, #5b8cff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+            font-weight: 800;
+            box-shadow: 0 12px 30px rgba(124,92,255,.3);
+            position: relative;
+            z-index: 2;
+        }
+
+        .product-category {
+            position: absolute;
+            right: 14px;
+            top: 14px;
+            padding: 5px 8px;
+            border-radius: 6px;
+            background: rgba(0,0,0,.25);
+            border: 1px solid rgba(255,255,255,.08);
+            font-size: 9px;
+            color: #c8cbd5;
+            z-index: 3;
+        }
+
+        .product-body {
+            padding: 17px;
+        }
+
+        .product-title {
+            font-size: 16px;
+            font-weight: 750;
+            margin-bottom: 7px;
+        }
+
+        .product-description {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.6;
+            min-height: 38px;
+        }
+
+        .product-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 17px;
+            padding-top: 13px;
+            border-top: 1px solid var(--border);
+        }
+
+        .version {
+            color: #777f91;
+            font-size: 10px;
+        }
+
+        .view-btn {
+            border: 0;
+            color: white;
+            background: rgba(124,92,255,.14);
+            padding: 7px 10px;
+            border-radius: 7px;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .view-btn:hover {
+            background: var(--accent);
+        }
+
+        /* =========================
+           DETAIL MODAL
+        ========================= */
+
+        .modal {
+            position: fixed;
+            inset: 0;
+            z-index: 500;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: rgba(0,0,0,.72);
+            backdrop-filter: blur(8px);
+        }
+
+        .modal.active {
+            display: flex;
+            animation: fadeIn .2s ease;
+        }
+
+        .modal-box {
+            width: min(800px, 100%);
+            max-height: 90vh;
+            overflow-y: auto;
+            background: #101319;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            box-shadow: 0 30px 100px rgba(0,0,0,.55);
+            animation: slideUp .25s ease;
+        }
+
+        .modal-head {
+            padding: 25px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .modal-title-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+        }
+
+        .modal-title h2 {
+            font-size: 20px;
+        }
+
+        .modal-title span {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .close {
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,.04);
+            color: #aaa;
+            font-size: 18px;
+        }
+
+        .close:hover {
+            color: white;
+            background: rgba(255,255,255,.08);
+        }
+
+        .modal-content {
+            padding: 25px;
+        }
+
+        .detail-description {
+            color: #aeb4c2;
+            font-size: 13px;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+
+        .detail-section {
+            margin-bottom: 25px;
+        }
+
+        .detail-section h3 {
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 9px;
+        }
+
+        .feature {
+            background: rgba(255,255,255,.025);
+            border: 1px solid var(--border);
+            padding: 11px;
+            border-radius: 8px;
+            color: #adb3c0;
+            font-size: 11px;
+        }
+
+        .feature::before {
+            content: "✓";
+            color: var(--success);
+            margin-right: 8px;
+            font-weight: 800;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 9px;
+        }
+
+        .action-btn {
+            border: 0;
+            border-radius: 8px;
+            padding: 11px 17px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .action-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .action-secondary {
+            background: rgba(255,255,255,.06);
+            color: #d5d8df;
+            border: 1px solid var(--border);
+        }
+
+        /* =========================
+           EMPTY
+        ========================= */
+
+        .empty {
+            grid-column: 1 / -1;
+            padding: 50px;
+            text-align: center;
+            border: 1px dashed var(--border);
+            border-radius: 14px;
+            color: var(--muted);
+        }
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        .mobile-menu {
+            display: none;
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: white;
+            width: 38px;
+            height: 38px;
+            border-radius: 9px;
+            font-size: 18px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 1100px) {
+            .products {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 800px) {
+            .sidebar {
+                transform: translateX(-100%);
+                transition: .25s;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .topbar {
+                padding: 0 18px;
+            }
+
+            .content {
+                padding: 22px 18px;
+            }
+
+            .hero {
+                padding: 30px 25px;
+            }
+
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .search {
+                width: 180px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .products {
+                grid-template-columns: 1fr;
+            }
+
+            .breadcrumb {
+                display: none;
+            }
+
+            .search {
+                width: calc(100% - 50px);
+            }
+
+            .topbar {
+                gap: 10px;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .section-header {
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- =========================
+     SIDEBAR
+========================= -->
+
+<aside class="sidebar" id="sidebar">
+
+    <div class="logo">
+<div class="logo-icon">
+    <img src="logo.png" alt="Maze Project">
+</div>
+        <div class="logo-text">Maze<span> Project</span></div>
+    </div>
+
+    <div class="menu-title">Menü</div>
+
+    <nav class="nav">
+
+<button class="nav-item active" onclick="filterProducts('all', this)">
+    <span class="nav-icon">
+        <i class="fa-solid fa-house"></i>
+    </span>
+    Ana Sayfa
+</button>
+
+<button class="nav-item" onclick="filterProducts('plugin', this)">
+    <span class="nav-icon">
+        <i class="fa-solid fa-cube"></i>
+    </span>
+    Eklentiler
+    <span class="nav-count">1</span>
+</button>
+
+<button class="nav-item" onclick="filterProducts('package', this)">
+    <span class="nav-icon">
+        <i class="fa-solid fa-box-open"></i>
+    </span>
+    Eklenti Paketleri
+    <span class="nav-count">2</span>
+</button>
+
+    </nav>
+
+    <div class="menu-title" style="margin-top:28px;">Platform</div>
+
+    <nav class="nav">
+
+<button class="nav-item" onclick="filterProducts('proxy', this)">
+    <span class="nav-icon">
+        <i class="fa-solid fa-network-wired"></i>
+    </span>
+    Proxy
+</button>
+
+<button class="nav-item" onclick="filterProducts('spigot', this)">
+    <span class="nav-icon">
+        <i class="fa-solid fa-cube"></i>
+    </span>
+    Spigot
+</button>
+
+    </nav>
+
+    <div class="sidebar-bottom">
+
+        <div class="discord-box">
+            <strong>Discord Topluluğu</strong>
+            <p>Ürünler, güncellemeler ve destek için topluluğumuza katıl.</p>
+<button class="discord-btn" onclick="window.open('https://discord.gg/kBps8Us3jx', '_blank')">
+    <i class="fa-brands fa-discord"></i>
+    Discord'a Katıl
+</button>
+        </div>
+
+    </div>
+
+</aside>
+
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main class="main">
+
+    <header class="topbar">
+
+        <button class="mobile-menu" onclick="toggleSidebar()">☰</button>
+
+        <div class="breadcrumb">
+            Maze Project / <span id="breadcrumb">Ana Sayfa</span>
+        </div>
+
+        <div class="search">
+            <span class="search-icon">⌕</span>
+            <input
+                type="text"
+                id="search"
+                placeholder="Eklenti ara..."
+                oninput="searchProducts()"
+            >
+        </div>
+
+    </header>
+
+
+    <div class="content">
+
+        <!-- HERO -->
+
+        <section class="hero">
+
+            <div class="hero-content">
+
+                <div class="hero-badge">
+                    MAZE PROJECT
+                </div>
+
+                <h1>
+                    En iyi Minecraft deneyimi için ihtiyacın olan her şey burada.<br>
+                    <span>Güvenli ödeme, anında teslimat.</span>
+                </h1>
+
+            </div>
+
+        </section>
+
+
+        <!-- STATS -->
+
+        <section class="stats">
+
+            <div class="stat">
+                <div class="stat-label">Toplam Ürün</div>
+                <div class="stat-value">
+                    <span id="totalProducts">3</span>
+                    <span class="stat-small">ürün</span>
+                </div>
+            </div>
+
+            <div class="stat">
+                <div class="stat-label">Desteklenen Platformlar</div>
+                <div class="stat-value">Spigot & Proxy</div>
+            </div>
+
+            <div class="stat">
+                <div class="stat-label">Güncellemeler</div>
+                <div class="stat-value">
+                    Aktif
+                    <span class="stat-small">●</span>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- PRODUCTS -->
+
+        <div class="section-header">
+
+            <div>
+                <h2 id="sectionTitle">Tüm Ürünler</h2>
+                <p id="sectionDescription">
+                    Eklentilerimizi ve eklenti paketlerimizi keşfedin.
+                </p>
+            </div>
+
+            <button class="filter" onclick="filterProducts('all')">
+                Tümünü Göster
+            </button>
+
+        </div>
+
+        <div class="products" id="products"></div>
+
+    </div>
+
+</main>
+
+
+<!-- =========================
+     PRODUCT DETAIL MODAL
+========================= -->
+
+<div class="modal" id="modal" onclick="closeOutside(event)">
+
+    <div class="modal-box">
+
+        <div class="modal-head">
+
+            <div class="modal-title">
+
+                <div class="modal-title-icon" id="modalIcon">
+                    P
+                </div>
+
+                <div>
+                    <h2 id="modalTitle">Ürün</h2>
+                    <span id="modalCategory">Eklenti</span>
+                </div>
+
+            </div>
+
+            <button class="close" onclick="closeModal()">×</button>
+
+        </div>
+
+        <div class="modal-content">
+
+            <p class="detail-description" id="modalDescription"></p>
+
+            <div class="detail-section">
+
+                <h3>Özellikler</h3>
+
+                <div class="features" id="modalFeatures"></div>
+
+            </div>
+
+            <div class="detail-section">
+
+                <h3>Bilgiler</h3>
+
+                <div class="features">
+
+                    <div class="feature" id="modalVersion">
+                        Sürüm
+                    </div>
+
+                    <div class="feature" id="modalPlatform">
+                        Platform
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="modal-actions">
+
+<button class="action-btn action-primary" id="productLink">
+    Ürünü İncele
+</button>
+
+                <button class="action-btn action-secondary" onclick="closeModal()">
+                    Kapat
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    const products = [
+
+        {
+            id: 1,
+            name: "mModeration",
+            short: "Modern ve kapsamlı Minecraft moderasyon sistemi.",
+            description:
+                "Minecraft sunucunuzun moderasyon altyapısını güçlendirmek için geliştirilen kapsamlı bir Paper eklentisidir. Ban sistemlerinden rapor yönetimine, staff araçlarından sohbet korumasına kadar birçok özelliği tek bir eklenti içerisinde bir araya getirir. Modern GUI menüleri, çift dil desteği (TR/EN) ve MySQL altyapısı sayesinde hem küçük sunucuların hem de büyük networklerin moderasyon ihtiyaçlarını kolayca karşılamayı hedefler. Sunucunuzun moderasyon tarafındaki tüm ihtiyaçlarını tek bir eklenti üzerinden karşılayın.",
+            type: "plugin",
+            category: "Spigot Eklentisi",
+            platform: "spigot",
+            version: "1.0",
+            icon: "M",
+
+            link: "https://mazeproject.com.tr/product/mmoderation-geli-mi-moderasyon-sistemi",
+
+            features: [
+                "Gelişmiş Ban Sistemi",
+                "Mute Sistemi",
+                "Uyarı + Otomatik Ceza",
+                "Rapor Sistemi",
+                "Staff Paneli",
+                "Freeze Sistemi",
+                "Vanish Sistemi",
+                "Staff Chat & Staff Mode",
+                "Sohbet Koruması",
+                "MySQL + Discord + PlaceholderAPI"
+            ]
+        },
+
+        {
+            id: 2,
+            name: "Velocity Eklenti Paketi V1",
+            short: "Minecraft sunucunuzun Velocity proxy altyapısını daha güçlü ve kullanışlı hale getirmek için hazırlanmış kapsamlı bir eklenti paketidir..",
+            description:
+                "Minecraft sunucunuzun Velocity proxy altyapısını daha güçlü ve kullanışlı hale getirmek için hazırlanmış kapsamlı bir eklenti paketidir. Oyuncu bağlantılarını, sunucular arası geçişleri ve proxy yönetimini kolaylaştıran çeşitli sistemleri tek bir paket altında birleştirir. Modern sunucu yapıları düşünülerek hazırlanan paket, düzenli altyapısı ve kullanışlı özellikleriyle Velocity tabanlı projelerin ihtiyaçlarına yönelik geliştirilmiştir.",
+            type: "package",
+            category: "Eklenti Paketleri",
+            platform: "proxy",
+            version: "V1",
+            icon: "V",
+
+            link: "https://mazeproject.com.tr/product/velocity-eklenti-paketi-v1",
+            
+            features: [
+                "Gelişmiş Anti-Bot Sistemi",
+                "Anti-VPN / Proxy Koruması",
+                "Akıllı Sunucu Yönlendirme",
+                "Gelişmiş Bakım Sistemi",
+                "Parti Sistemi",
+                "Arkadaş Sistemi",
+                "Oyuncu Ping Sistemi",
+                "Gelişmiş MOTD Sistemi",
+                "Hover Mesaj Sistemi",
+                "Network Skin Sistemi",
+                "MySQL Entegrasyonu",
+                "Hazır Optimize Config",
+            ]
+        },
+
+        {
+            id: 3,
+            name: "BungeeCord Eklenti Paketi V1",
+            short: "Minecraft sunucunuzun proxy altyapısını güçlendirmek için geliştirilen kapsamlı bir BungeeCord eklenti paketidir.",
+            description:
+                "Minecraft sunucunuzun proxy altyapısını güçlendirmek için geliştirilen kapsamlı bir BungeeCord eklenti paketidir. Oyuncu deneyimini geliştiren sosyal sistemlerden yönetim ve sunucu kontrol araçlarına kadar birçok özelliği tek bir paket içerisinde bir araya getirir. Düzenli altyapısı, kullanışlı sistemleri ve pratik yönetim araçları sayesinde BungeeCord tabanlı sunucuların proxy tarafındaki ihtiyaçlarını kolayca karşılamayı hedefler.",
+            type: "package",
+            category: "Eklenti Paketleri",
+            platform: "proxy",
+            version: "V1",
+            icon: "B",
+            link: "https://mazeproject.com.tr/product/bungeecord-eklenti-paketi-v1",
+            features: [
+                "Network Yönetim Sistemi",
+                "Gelişmiş Bağlantı Koruması",
+                "Anti-Bot & Anti-VPN",
+                "Sunucular Arası Duyuru",
+                "Akıllı Sunucu Geçişi",
+                "Parti Sistemi",
+                "Arkadaş Sistemi",
+                "Bakım Modu",
+                "Gelişmiş MOTD Sistemi",
+                "Hover Mesaj Desteği",
+                "Oyuncu Ping Sistemi"
+            ]
+        }
+
+    ];
+
+
+    let currentFilter = "all";
+
+
+    /*
+     * ÜRÜNLERİ GÖSTER
+     */
+
+    function renderProducts(list = products) {
+
+        const container = document.getElementById("products");
+
+        if (list.length === 0) {
+
+            container.innerHTML = `
+                <div class="empty">
+                    <div style="font-size:30px;margin-bottom:10px;">⌕</div>
+                    <strong>Ürün bulunamadı</strong>
+                    <p style="margin-top:5px;">
+                        Arama kriterlerinize uygun bir ürün bulunamadı.
+                    </p>
+                </div>
+            `;
+
+            return;
+        }
+
+
+        container.innerHTML = list.map(product => `
+
+            <article
+                class="product"
+                onclick="openProduct(${product.id})"
+            >
+
+                <div class="product-banner">
+
+                    <div class="product-icon">
+                        ${product.icon}
+                    </div>
+
+                    <div class="product-category">
+                        ${product.category}
+                    </div>
+
+                </div>
+
+                <div class="product-body">
+
+                    <div class="product-title">
+                        ${product.name}
+                    </div>
+
+                    <div class="product-description">
+                        ${product.short}
+                    </div>
+
+                    <div class="product-footer">
+
+                        <span class="version">
+                            ${product.version} · ${product.platform}
+                        </span>
+
+                        <button
+                            class="view-btn"
+                            onclick="event.stopPropagation(); openProduct(${product.id})"
+                        >
+                            Detay →
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        `).join("");
+
+    }
+
+
+    /*
+     * FİLTRE
+     */
+
+    function filterProducts(type, element = null) {
+
+        currentFilter = type;
+
+        document.querySelectorAll(".nav-item").forEach(item => {
+            item.classList.remove("active");
+        });
+
+        if (element) {
+            element.classList.add("active");
+        }
+
+
+        let filtered = products;
+
+        if (type === "plugin") {
+            filtered = products.filter(p => p.type === "plugin");
+            updateHeader("Eklentiler", "Minecraft sunucularınız için eklentiler.");
+        }
+
+        else if (type === "package") {
+            filtered = products.filter(p => p.type === "package");
+            updateHeader("Eklenti Paketleri", "Hazır ve kapsamlı eklenti paketleri.");
+        }
+
+        else if (type === "proxy") {
+            filtered = products.filter(p => p.platform === "proxy");
+            updateHeader("Proxy", "Proxy altyapısı için ürünler.");
+        }
+
+        else if (type === "spigot") {
+            filtered = products.filter(p => p.platform === "spigot");
+            updateHeader("Spigot", "Spigot altyapısı için ürünler.");
+        }
+
+        else {
+            updateHeader("Tüm Ürünler", "Eklentilerimizi ve eklenti paketlerimizi keşfedin.");
+        }
+
+
+        document.getElementById("search").value = "";
+
+        renderProducts(filtered);
+
+        document.getElementById("sidebar").classList.remove("open");
+
+    }
+
+
+    function updateHeader(title, description) {
+
+        document.getElementById("sectionTitle").textContent = title;
+        document.getElementById("sectionDescription").textContent = description;
+        document.getElementById("breadcrumb").textContent = title;
+
+    }
+
+
+    /*
+     * ARAMA
+     */
+
+    function searchProducts() {
+
+        const query = document
+            .getElementById("search")
+            .value
+            .toLowerCase()
+            .trim();
+
+
+        let filtered = products;
+
+
+        if (currentFilter !== "all") {
+
+            if (currentFilter === "plugin") {
+                filtered = filtered.filter(p => p.type === "plugin");
+            }
+
+            else if (currentFilter === "package") {
+                filtered = filtered.filter(p => p.type === "package");
+            }
+
+            else {
+                filtered = filtered.filter(
+                    p => p.platform.toLowerCase() === currentFilter
+                );
+            }
+
+        }
+
+
+        if (query) {
+
+            filtered = filtered.filter(product =>
+
+                product.name.toLowerCase().includes(query) ||
+                product.short.toLowerCase().includes(query) ||
+                product.category.toLowerCase().includes(query) ||
+                product.platform.toLowerCase().includes(query)
+
+            );
+
+        }
+
+
+        renderProducts(filtered);
+
+    }
+
+
+    /*
+     * ÜRÜN DETAY
+     */
+
+    function openProduct(id) {
+
+        const product = products.find(p => p.id === id);
+
+        if (!product) return;
+
+
+        document.getElementById("modalIcon").textContent = product.icon;
+
+        document.getElementById("modalTitle").textContent = product.name;
+
+        document.getElementById("modalCategory").textContent =
+            product.category;
+
+        document.getElementById("modalDescription").textContent =
+            product.description;
+
+        document.getElementById("modalVersion").textContent =
+            "Sürüm: " + product.version;
+
+        document.getElementById("modalPlatform").textContent =
+            "Platform: " + product.platform;
+
+
+        document.getElementById("modalFeatures").innerHTML =
+            product.features.map(feature => `
+                <div class="feature">
+                    ${feature}
+                </div>
+            `).join("");
+
+            
+document.getElementById("modalFeatures").innerHTML =
+    product.features.map(feature => `
+        <div class="feature">
+            ${feature}
+        </div>
+    `).join("");
+
+
+const productLink = document.getElementById("productLink");
+
+productLink.onclick = function() {
+    if (product.link) {
+        window.open(product.link, "_blank");
+    }
+};
+
+
+document.getElementById("modal").classList.add("active");
+
+document.body.style.overflow = "hidden";
+
+    }
+
+
+    function closeModal() {
+
+        document.getElementById("modal").classList.remove("active");
+
+        document.body.style.overflow = "";
+
+    }
+
+
+    function closeOutside(event) {
+
+        if (event.target.id === "modal") {
+            closeModal();
+        }
+
+    }
+
+
+    /*
+     * ESC İLE MODAL KAPAT
+     */
+
+    document.addEventListener("keydown", function(event) {
+
+        if (event.key === "Escape") {
+            closeModal();
+        }
+
+    });
+
+
+    /*
+     * MOBİL SIDEBAR
+     */
+
+    function toggleSidebar() {
+
+        document
+            .getElementById("sidebar")
+            .classList.toggle("open");
+
+    }
+
+
+    /*
+     * BAŞLANGIÇ
+     */
+
+    renderProducts();
+
+</script>
+
+</body>
+</html>
